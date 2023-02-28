@@ -1,16 +1,17 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as cdk from "aws-cdk-lib";
+
+import { Construct } from "constructs";
+import { RedisStack } from "./stacks/redis/redis-stack";
+import { VpcStack } from "./stacks/vpc/vpc-stack";
 
 export class SkribbleCdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const vpcStack = new VpcStack(this, "SkribbleVpcStack");
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'SkribbleCdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const redisStack = new RedisStack(this, "SkribbleRedisStack", {
+      vpc: vpcStack.vpc,
+    });
   }
 }
