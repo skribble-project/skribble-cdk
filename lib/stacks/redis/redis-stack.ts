@@ -22,7 +22,7 @@ export class RedisStack extends cdk.Stack {
       `${resourceName}SubnetGroup`,
       {
         description: "Subnet group for the redis cluster",
-        subnetIds: props.vpc.publicSubnets.map((ps) => ps.subnetId),
+        subnetIds: props.vpc.isolatedSubnets.map((s) => s.subnetId),
         cacheSubnetGroupName: "Skribble-Redis-Subnet-Group",
       }
     );
@@ -42,7 +42,7 @@ export class RedisStack extends cdk.Stack {
       `${resourceName}Cache`,
       {
         engine: "redis",
-        cacheNodeType: "cache.t4g.small",
+        cacheNodeType: "cache.t2.micro",
         numCacheNodes: 1,
         clusterName: "SkribbleRedisCluster",
         autoMinorVersionUpgrade: true,
@@ -50,7 +50,6 @@ export class RedisStack extends cdk.Stack {
         cacheSubnetGroupName: redisSubnetGroup.ref,
       }
     );
-
 
     this.redisCluster.addDependency(redisSubnetGroup);
 

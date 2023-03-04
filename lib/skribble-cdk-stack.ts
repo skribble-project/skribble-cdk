@@ -9,20 +9,16 @@ export class SkribbleCdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const vpcStack = new VpcStack(this, "SkribbleVpcStack");
+    const vpcStack = new VpcStack(this, "vpc");
 
-    const redisStack = new RedisStack(this, "SkribbleRedisStack", {
+    const redisStack = new RedisStack(this, "redis", {
       vpc: vpcStack.vpc,
     });
 
-    const redisLambdaStack = new RedisLambdaStack(
-      this,
-      "SkribbleRedisLambdaStack",
-      {
-        redisCache: redisStack.redisCluster,
-        vpc: vpcStack.vpc,
-        redisSecurityGroup: redisStack.redisSecurityGroup,
-      }
-    );
+    const redisLambdaStack = new RedisLambdaStack(this, "redisLambda", {
+      redisCache: redisStack.redisCluster,
+      vpc: vpcStack.vpc,
+      redisSecurityGroup: redisStack.redisSecurityGroup,
+    });
   }
 }
