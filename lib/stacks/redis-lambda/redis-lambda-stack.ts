@@ -52,7 +52,7 @@ export class RedisLambdaStack extends cdk.Stack {
       "Allow this lambda function connect to the redis cache"
     );
 
-    const functionName = "HostGame";
+    const functionName = "Dummy";
     new RedisLambdaConstruct(this, `"${functionName}Lambda"`, {
       functionName,
       vpc: props.vpc,
